@@ -37,19 +37,28 @@ image=cv2.imread('balls.jpg',1)
 
 
 image=cv2.imread('balls.jpg')
-new_image=cv2.cvtColor(image,cv2.COLOR_BGR2HSV)  #converted to hsv
-cv2.imshow('image',new_image)
+# new_image=cv2.cvtColor(image,cv2.COLOR_BGR2HSV)  #converted to hsv
+# cv2.imshow('image',new_image)
 
-lower_bond=np.array([110,50,50])
-upper_bond=np.array([130,252,252])
-mask=cv2.inRange(new_image,lower_bond,upper_bond)  #to track image ROUND BLUE COLOUR
-cv2.imshow('mask',mask)
+cap=cv2.VideoCapture(0)
+while(1):
+    _,frame=cap.read()
+    new_image=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
+    cv2.imshow('image',new_image)
 
-res=cv2.bitwise_and(image,image,mask=mask)  #PRINT the image found
-cv2.imshow('res',res)
 
-# blue=np.uint8([[[255,0,0]]])
-# hsv_blue=cv2.cvtColor(blue,cv2.COLOR_BGR2HSV)
-# print(hsv_blue)
-cv2.waitKey(0)
+    lower_bond=np.array([110,50,50])
+    upper_bond=np.array([130,252,252])
+    mask=cv2.inRange(new_image,lower_bond,upper_bond)  #to track image ROUND BLUE COLOUR
+    cv2.imshow('mask',mask)
+
+    res=cv2.bitwise_and(frame,frame,mask=mask)  #PRINT the image found
+    cv2.imshow('res',res)
+
+    # blue=np.uint8([[[255,0,0]]])
+    # hsv_blue=cv2.cvtColor(blue,cv2.COLOR_BGR2HSV)
+    # print(hsv_blue)
+    k= cv2.waitKey(5) & 0xFF
+    if k ==27:
+        break
 cv2.destroyAllWindows()
